@@ -19,7 +19,7 @@
         <url>scm:git:git@github.com:digital-preservation/droid.git</url>
       <tag>HEAD</tag>
   </scm>
-    
+
     <modules>
         <module>droid-parent</module>
         <module>droid-core</module>
@@ -37,7 +37,7 @@
         <module>droid-swing-ui</module>
 	<module>droid-binary</module>
     </modules>
-    
+
     <build>
         <plugins>
             <plugin>

@@ -63,7 +63,7 @@ public class SignatureFileParser {
      * @return sig file
      * @throws SignatureParseException if there is a problem parsing the signature file.
      */
-    FFSignatureFile parseSigFile(String theFileName) throws SignatureParseException {
+    public FFSignatureFile parseSigFile(String theFileName) throws SignatureParseException {
 
         SAXModelBuilder mb = new SAXModelBuilder();
         XMLReader parser = getXMLReader(mb);
