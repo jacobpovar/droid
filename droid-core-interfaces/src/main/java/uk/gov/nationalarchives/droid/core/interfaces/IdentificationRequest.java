@@ -43,7 +43,7 @@ import net.domesdaybook.reader.ByteReader;
  * @author rflitcroft
  *
  */
-public interface IdentificationRequest {
+public interface IdentificationRequest extends AutoCloseable {
 
     /**
      * Returns a byte at the position specified.

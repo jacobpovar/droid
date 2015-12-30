@@ -32,9 +32,9 @@ public class WebSubmissionGatewayImpl implements WebSubmissionGateway {
 
     public Optional<FileFormat> process(String fileName) throws Exception {
         File file = new File(fileName);
-        if (!file.exists()) {
+        if (!file.exists())
             throw new Exception("File not found");
-        }
+
         URI uri = file.toURI();
         RequestMetaData metaData = null;
         try {
@@ -46,11 +46,9 @@ public class WebSubmissionGatewayImpl implements WebSubmissionGateway {
         RequestIdentifier identifier = new RequestIdentifier(uri);
         identifier.setParentId(Long.valueOf(1L));
 
-        InputStream in = null;
-        IdentificationRequest request = new FileSystemIdentificationRequest(metaData, identifier);
-        
-        try {
-            in = new FileInputStream(file);
+        try (InputStream in = new FileInputStream(file);
+             IdentificationRequest request = new FileSystemIdentificationRequest(metaData, identifier)
+        ) {
             request.open(in);
             IdentificationResultCollection identificationResultCollection = this.fileChecker.get(file);
 
@@ -71,13 +69,6 @@ public class WebSubmissionGatewayImpl implements WebSubmissionGateway {
         } catch (IOException e) {
             e.printStackTrace();
             throw new Exception("Failed to check file", e);
-        } finally {
-            request.close();
-            try {
-                in.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
