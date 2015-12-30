@@ -4,7 +4,7 @@
     <parent>
         <artifactId>droid-parent</artifactId>
         <groupId>uk.gov.nationalarchives</groupId>
-        <version>6.2.0-SNAPSHOT</version>
+        <version>6.1.6-SNAPSHOT</version>
         <relativePath>droid-parent</relativePath>
     </parent>
   
@@ -47,6 +47,9 @@
                 <configuration>
                     <header>droid-parent/header.txt</header>
                     <aggregate>false</aggregate>
+                    <excludes>
+                        <exclude>.idea/**</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
         </plugins>
