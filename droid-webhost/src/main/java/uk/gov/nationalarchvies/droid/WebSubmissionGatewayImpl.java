@@ -8,6 +8,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import uk.gov.nationalarchives.droid.core.SignatureFileParser;
 import uk.gov.nationalarchives.droid.core.interfaces.IdentificationRequest;
@@ -24,13 +25,12 @@ import uk.gov.nationalarchives.droid.signature.SaxSignatureFileParser;
 import uk.gov.nationalarchives.droid.signature.SignatureParser;
 
 public class WebSubmissionGatewayImpl implements WebSubmissionGateway {
-    final String signatureFile = "DROID_SignatureFile_V78.xml";
+    final String signatureFile = "DROID_SignatureFile_V82.xml";
     private FileFormatIdentifier fileChecker;
     private Map<String, Format> formatMap = new HashMap();
     private FFSignatureFile sigFile;
 
-    public FileFormat process(String fileName)
-            throws Exception {
+    public Optional<FileFormat> process(String fileName) throws Exception {
         File file = new File(fileName);
         if (!file.exists()) {
             throw new Exception("File not found");
@@ -42,29 +42,35 @@ public class WebSubmissionGatewayImpl implements WebSubmissionGateway {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         RequestIdentifier identifier = new RequestIdentifier(uri);
         identifier.setParentId(Long.valueOf(1L));
 
         InputStream in = null;
         IdentificationRequest request = new FileSystemIdentificationRequest(metaData, identifier);
+        
         try {
             in = new FileInputStream(file);
             request.open(in);
             IdentificationResultCollection identificationResultCollection = this.fileChecker.get(file);
 
-            List<IdentificationResult> listResults = identificationResultCollection.getResults();
-            if (listResults.isEmpty()) {
-                throw new Exception("Failed to check file");
-            }
-            return getFirstMatchedResultOf(identificationResultCollection);
+            final Optional<FileFormat> fileFormat = identificationResultCollection
+                    .getResults()
+                    .stream()
+                    .findFirst()
+                    .map(x -> x.getPuid())
+                    .map(x -> this.sigFile.getFileFormat(x));
+
+            final Optional<FileFormat> extensionFormat = this.sigFile
+                    .getFileFormatsForExtension(getFileExtension(file))
+                    .stream()
+                    .findFirst();
+
+            return fileFormat.isPresent() ? fileFormat : extensionFormat;
+
         } catch (IOException e) {
-            try {
-                String extension = getFileExtension(file);
-                return this.sigFile.getFileFormatsForExtension(extension).get(0);
-            } catch (Exception ex) {
-                e.printStackTrace();
-                throw new Exception("Failed to check file");
-            }
+            e.printStackTrace();
+            throw new Exception("Failed to check file", e);
         } finally {
             request.close();
             try {
@@ -96,14 +102,9 @@ public class WebSubmissionGatewayImpl implements WebSubmissionGateway {
         this.sigFile.prepareForUse();
     }
 
-    private FileFormat getFirstMatchedResultOf(IdentificationResultCollection identificationResultCollection) {
-        IdentificationResult firstResult = identificationResultCollection.getResults().get(0);
-        return this.sigFile.getFileFormat(firstResult.getPuid());
-    }
-
     public void setFileChecker(FileFormatIdentifier fileChecker) {
         this.fileChecker = fileChecker;
-        String containerSignatureFile = "container-signature-20140922.xml";
+        String containerSignatureFile = "container-signature-20150327.xml";
         this.fileChecker.setFileSignaturesFileName(signatureFile);
         this.fileChecker.setContainerSignaturesFileName(containerSignatureFile);
         try {

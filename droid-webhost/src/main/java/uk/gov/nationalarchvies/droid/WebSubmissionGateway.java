@@ -2,8 +2,10 @@ package uk.gov.nationalarchvies.droid;
 
 import uk.gov.nationalarchives.droid.core.signature.FileFormat;
 
-public interface WebSubmissionGateway {
-    public FileFormat process(String paramString) throws Exception;
+import java.util.Optional;
 
-    public abstract void setFileChecker(FileFormatIdentifier paramFileFormatIdentifier);
+public interface WebSubmissionGateway {
+    Optional<FileFormat> process(String paramString) throws Exception;
+
+    void setFileChecker(FileFormatIdentifier paramFileFormatIdentifier);
 }

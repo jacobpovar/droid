@@ -1,0 +1,45 @@
+Manifest-Version: 1.0
+Class-Path: xml-resolver-1.2.jar spring-jdbc-4.0.3.RELEASE.jar cxf-api
+ -2.2.12.jar commons-httpclient-3.1.jar cxf-common-utilities-2.2.12.ja
+ r org.restlet-2.1.2.jar saaj-api-1.3.jar opencsv-2.3.jar bcmail-jdk14
+ -138.jar slf4j-log4j12-1.4.2.jar cxf-rt-frontend-jaxws-2.2.12.jar cxf
+ -tools-common-2.2.12.jar org.restlet.lib.org.json-2.0.jar aspectjrt-1
+ .7.2.jar org.restlet.ext.json-2.1.2.jar byteseek-1.1.1.jar poi-3.7.ja
+ r derby-10.10.2.0.jar cxf-common-schemas-2.2.12.jar spring-web-2.5.6.
+ jar commons-io-2.4.jar jakarta-regexp-1.4.jar geronimo-javamail_1.4_s
+ pec-1.6.jar dbunit-2.4.8.jar cxf-rt-transports-http-2.2.12.jar neethi
+ -2.0.4.jar cxf-rt-ws-addr-2.2.12.jar truezip-6.8.4.jar org-netbeans-s
+ wing-outline-7.2.jar jboss-transaction-api_1.2_spec-1.0.0.Final.jar h
+ ibernate-jpa-2.1-api-1.0.0.Final.jar antlr-runtime-3.2.jar jboss-logg
+ ing-annotations-1.2.0.Beta1.jar org.restlet.ext.ssl-2.1.2.jar jetty-u
+ til-6.1.26.jar wstx-asl-3.2.9.jar cxf-rt-bindings-xml-2.2.12.jar spri
+ ng-expression-4.0.3.RELEASE.jar log4j-1.2.13.jar aopalliance-1.0.jar 
+ commons-compress-1.4.1.jar cxf-rt-bindings-http-2.2.12.jar spring-aop
+ -4.0.3.RELEASE.jar jfcunit-2.08.jar antlr-3.2.jar hibernate-commons-a
+ nnotations-4.0.4.Final.jar org-openide-util-7.2.jar geronimo-stax-api
+ _1.0_spec-1.0.1.jar cxf-rt-frontend-simple-2.2.12.jar cxf-rt-core-2.2
+ .12.jar ejb3-persistence-1.0.2.GA.jar itext-2.0.8.jar xml-apis-1.3.04
+ .jar stringtemplate-3.2.jar org.restlet.ext.simple-2.1.2.jar classmat
+ e-1.0.0.jar commons-dbcp-1.4.jar xz-1.0.jar spring-core-4.0.3.RELEASE
+ .jar slf4j-api-1.5.6.jar geronimo-annotation_1.0_spec-1.1.1.jar hiber
+ nate-entitymanager-4.3.5.Final.jar spring-context-4.0.3.RELEASE.jar j
+ avahelp-2.0.05.jar geronimo-jaxws_2.1_spec-1.0.jar jaxb-api-2.1.jar h
+ ibernate-validator-5.1.0.Final.jar activation-1.1.jar stax-api-1.0-2.
+ jar bcprov-jdk14-138.jar commons-lang-2.6.jar xmlunit-1.3.jar joda-ti
+ me-1.6.2.jar antlr-2.7.7.jar spring-beans-4.0.3.RELEASE.jar cxf-rt-da
+ tabinding-jaxb-2.2.12.jar geronimo-activation_1.1_spec-1.0.2.jar java
+ ssist-3.18.1-GA.jar validation-api-1.1.0.Final.jar jsslutils-1.0.5.ja
+ r spring-tx-4.0.3.RELEASE.jar aspectjweaver-1.7.2.jar hibernate-core-
+ 4.3.5.Final.jar geronimo-ws-metadata_2.0_spec-1.1.2.jar jta-1.1.jar X
+ mlSchema-1.4.7.jar jandex-1.1.0.Final.jar jboss-logging-3.1.3.GA.jar 
+ cglib-nodep-2.2.2.jar spring-orm-4.0.3.RELEASE.jar jetty-6.1.26.jar c
+ xf-rt-bindings-soap-2.2.12.jar xercesImpl-2.9.1.jar beansbinding-1.2.
+ 1.jar commons-configuration-1.8.jar de.huxhorn.lilith.3rdparty.flying
+ saucer.core-renderer-8RC1.jar jaxb-impl-2.1.13.jar org-openide-util-l
+ ookup-7.2.jar saaj-impl-1.3.2.jar jra-1.0-alpha-4.jar slf4j-api-1.4.2
+ .jar commons-collections-3.2.1.jar spring-test-4.0.3.RELEASE.jar simp
+ le-4.1.21.jar commons-codec-1.4.jar gson-2.3.jar wsdl4j-1.6.2.jar com
+ mons-pool-1.5.4.jar servlet-api-2.5-20081211.jar asm-2.2.3.jar dom4j-
+ 1.6.1.jar commons-logging-1.1.1.jar commons-cli-1.2.jar
+Main-Class: uk.gov.nationalarchvies.droid.Entry
+

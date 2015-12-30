@@ -16,6 +16,7 @@ import uk.gov.nationalarchives.droid.core.interfaces.archive.IdentificationReque
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public class ResultsGenerator {
     private static final String R_SLASH = "/";
@@ -45,7 +46,7 @@ public class ResultsGenerator {
         this.slash = slash;
         this.slash1 = slash1;
         this.wrongSlash = (this.slash.equals("/") ? "\\" : "/");
-        this.archives = this.archives;
+
         if (containerSignatureDefinitions != null) {
             this.triggerPuids = containerSignatureDefinitions.getTiggerPuids();
         }
@@ -56,32 +57,35 @@ public class ResultsGenerator {
         String fileName = (this.path + request.getFileName()).replace(this.wrongSlash, this.slash);
         IdentificationResultCollection containerResults = getContainerResults(results, request, fileName);
 
-
         IdentificationResultCollection finalResults = new IdentificationResultCollection(request);
-        boolean container = false;
+
         if (containerResults.getResults().size() > 0) {
-            container = true;
             finalResults = containerResults;
         } else if (results.getResults().size() > 0) {
             finalResults = results;
         }
+
         if (finalResults.getResults().size() > 0) {
             this.binarySignatureIdentifier.removeLowerPriorityHits(finalResults);
         }
+
         return finalResults;
     }
 
     private IdentificationResultCollection getContainerResults(IdentificationResultCollection results, IdentificationRequest request, String fileName)
             throws CommandExecutionException {
         IdentificationResultCollection containerResults = new IdentificationResultCollection(request);
+
         if ((results.getResults().size() > 0) && (this.containerSignatureDefinitions != null)) {
             for (IdentificationResult identResult : results.getResults()) {
                 String filePuid = identResult.getPuid();
                 if (filePuid != null) {
-                    TriggerPuid containerPuid = getTriggerPuidByPuid(filePuid);
-                    if (containerPuid != null) {
+                    Optional<TriggerPuid> containerPuid = getTriggerPuidByPuid(filePuid);
+
+                    if (containerPuid.isPresent()) {
                         this.requestFactory = new ContainerFileIdentificationRequestFactory();
-                        String containerType = containerPuid.getContainerType();
+                        String containerType = containerPuid.get().getContainerType();
+
                         if ("OLE2".equals(containerType)) {
                             try {
                                 Ole2ContainerContentIdentifier ole2Identifier = new Ole2ContainerContentIdentifier();
@@ -113,15 +117,11 @@ public class ResultsGenerator {
                 }
             }
         }
+
         return containerResults;
     }
 
-    private TriggerPuid getTriggerPuidByPuid(String puid) {
-        for (TriggerPuid tp : this.triggerPuids) {
-            if (tp.getPuid().equals(puid)) {
-                return tp;
-            }
-        }
-        return null;
+    private Optional<TriggerPuid> getTriggerPuidByPuid(String puid) {
+        return this.triggerPuids.stream().filter(tp -> tp.getPuid().equals(puid)).findFirst();
     }
 }

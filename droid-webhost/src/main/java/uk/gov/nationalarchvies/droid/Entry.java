@@ -13,7 +13,7 @@ public class Entry {
 
         component.getServers().add(Protocol.HTTP, 8182);
 
-        component.getDefaultHost().attach("/checkservice", new App());
+        component.getDefaultHost().attach("/api", new App());
 
         component.start();
     }
