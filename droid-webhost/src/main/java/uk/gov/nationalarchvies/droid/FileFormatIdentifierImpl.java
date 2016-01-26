@@ -36,14 +36,15 @@ public class FileFormatIdentifierImpl
     private String slash1;
     private ContainerSignatureDefinitions containerSignatureDefinitions;
 
-    public void init() throws Exception
+    public void init()
+            throws Exception
     {
         this.binarySignatureIdentifier = new BinarySignatureIdentifier();
 
         File fileSignaturesFile = new File(this.fileSignaturesFileName);
-        if (!fileSignaturesFile.exists()) {
+        if (!fileSignaturesFile.exists())
             throw new Exception("Signature file not found");
-        }
+
         this.binarySignatureIdentifier.setSignatureFile(this.fileSignaturesFileName);
         try {
             this.binarySignatureIdentifier.init();
@@ -57,25 +58,56 @@ public class FileFormatIdentifierImpl
         this.slash = (this.path.contains("/") ? "/" : "\\");
         this.slash1 = this.slash;
 
-        File containerSignaturesFile = new File(this.containerSignaturesFileName);
-        if (!containerSignaturesFile.exists()) {
-            throw new CommandExecutionException("Container signature file not found");
-        }
+        this.containerSignatureDefinitions = null;
+        if (this.containerSignaturesFileName != null)         {
+            File containerSignaturesFile = new File(this.containerSignaturesFileName);
+            InputStream in = null;
+            if (!containerSignaturesFile.exists()) {
+                throw new CommandExecutionException("Container signature file not found");
+            }
 
-        try (InputStream in = new FileInputStream(this.containerSignaturesFileName)) {
-            ContainerSignatureSaxParser parser = new ContainerSignatureSaxParser();
-            this.containerSignatureDefinitions = parser.parse(in);
+            try {
+                in = new FileInputStream(this.containerSignaturesFileName);
+                ContainerSignatureSaxParser parser = new ContainerSignatureSaxParser();
+                this.containerSignatureDefinitions = parser.parse(in);
+                if (in != null) {
+                    try
+                    {
+                        in.close();
+                    }
+                    catch (IOException e)
+                    {
+                        throw new Exception("Error closing InputStream on signature file");
+                    }
+                }
+                this.resultsGenerator = new ResultsGenerator(this.binarySignatureIdentifier, this.containerSignatureDefinitions, this.path, this.slash, this.slash1);
+            }
+            catch (SignatureParseException e)
+            {
+                throw new Exception("Can't parse container signature file");
+            }
+            catch (IOException ioe)
+            {
+                throw new Exception(ioe);
+            }
+            catch (JAXBException jaxbe)
+            {
+                throw new Exception(jaxbe);
+            }
+            finally
+            {
+                if (in != null) {
+                    try
+                    {
+                        in.close();
+                    }
+                    catch (IOException e)
+                    {
+                        throw new Exception("Error closing InputStream on signature file");
+                    }
+                }
+            }
         }
-        catch (SignatureParseException e)
-        {
-            throw new Exception("Can't parse container signature file");
-        }
-        catch (IOException ioe)
-        {
-            throw new Exception(ioe);
-        }
-
-        this.resultsGenerator = new ResultsGenerator(this.binarySignatureIdentifier, this.containerSignatureDefinitions, this.path, this.slash, this.slash1);
     }
 
     public void setFileSignaturesFileName(String fileSignaturesFileName)
@@ -88,32 +120,56 @@ public class FileFormatIdentifierImpl
         this.containerSignaturesFileName = containerSignaturesFileName;
     }
 
-    public IdentificationResultCollection get(File file) throws Exception
+    public IdentificationResultCollection get(File file)
+            throws Exception
     {
         this.path = "";
         String fileName;
-        try {
+        try
+        {
             fileName = file.getCanonicalPath();
-        } catch (IOException e)         {
+        }
+        catch (IOException e)
+        {
             throw new CommandExecutionException(e);
         }
-
         URI uri = file.toURI();
         RequestMetaData metaData = new RequestMetaData(Long.valueOf(file.length()), Long.valueOf(file.lastModified()), fileName);
 
         RequestIdentifier identifier = new RequestIdentifier(uri);
         identifier.setParentId(Long.valueOf(1L));
 
-        try (InputStream in  = new FileInputStream(file);
-             IdentificationRequest request = new FileSystemIdentificationRequest(metaData, identifier)
-        ) {
+        InputStream in = null;
+        IdentificationRequest request = new FileSystemIdentificationRequest(metaData, identifier);
+        try
+        {
+            in = new FileInputStream(file);
             request.open(in);
             IdentificationResultCollection results = this.binarySignatureIdentifier.matchBinarySignatures(request);
             return this.resultsGenerator.get(results, request);
-
-        } catch (Exception e) {
-            this.log.error("error processing files", e);
+        }
+        catch (FileNotFoundException fnfe)
+        {
+            this.log.error("error processing files", fnfe);
+            throw new CommandExecutionException(fnfe);
+        }
+        catch (IOException e)
+        {
             throw new CommandExecutionException(e);
+        }
+        finally
+        {
+            if (in != null) {
+                try
+                {
+                    request.close();
+                    in.close();
+                }
+                catch (IOException e)
+                {
+                    throw new CommandExecutionException(e);
+                }
+            }
         }
     }
 
@@ -122,7 +178,8 @@ public class FileFormatIdentifierImpl
         this.fileSignaturesFileName = signatureFile;
     }
 
-    public void setContainerSignatureFile(String containerSignatureFile) {
+    public void setContainerSignatureFile(String containerSignatureFile)
+    {
         this.containerSignaturesFileName = containerSignatureFile;
     }
 }

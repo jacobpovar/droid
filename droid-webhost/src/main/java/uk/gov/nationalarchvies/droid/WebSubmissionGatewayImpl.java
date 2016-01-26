@@ -30,45 +30,43 @@ public class WebSubmissionGatewayImpl implements WebSubmissionGateway {
     private Map<String, Format> formatMap = new HashMap();
     private FFSignatureFile sigFile;
 
-    public Optional<FileFormat> process(String fileName) throws Exception {
+    public Optional<FileFormat> process(String fileName)
+            throws Exception {
         File file = new File(fileName);
-        if (!file.exists())
+        if (!file.exists()) {
             throw new Exception("File not found");
-
+        }
         URI uri = file.toURI();
         RequestMetaData metaData = null;
+
         try {
             metaData = new RequestMetaData(Long.valueOf(file.length()), Long.valueOf(file.lastModified()), file.getCanonicalPath());
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         RequestIdentifier identifier = new RequestIdentifier(uri);
         identifier.setParentId(Long.valueOf(1L));
 
-        try (InputStream in = new FileInputStream(file);
-             IdentificationRequest request = new FileSystemIdentificationRequest(metaData, identifier)
-        ) {
+        InputStream in = null;
+        IdentificationRequest request = new FileSystemIdentificationRequest(metaData, identifier);
+
+        try {
+            in = new FileInputStream(file);
             request.open(in);
             IdentificationResultCollection identificationResultCollection = this.fileChecker.get(file);
+            return identificationResultCollection.getResults().stream().findFirst().map(x -> x.getPuid()).map(this.sigFile::getFileFormat);
 
-            final Optional<FileFormat> fileFormat = identificationResultCollection
-                    .getResults()
-                    .stream()
-                    .findFirst()
-                    .map(x -> x.getPuid())
-                    .map(x -> this.sigFile.getFileFormat(x));
+        } catch (Exception e) {
+            String extension = getFileExtension(file);
+            return this.sigFile.getFileFormatsForExtension(extension).stream().findFirst();
 
-            final Optional<FileFormat> extensionFormat = this.sigFile
-                    .getFileFormatsForExtension(getFileExtension(file))
-                    .stream()
-                    .findFirst();
-
-            return fileFormat.isPresent() ? fileFormat : extensionFormat;
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new Exception("Failed to check file", e);
+        } finally {
+            request.close();
+            try {
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

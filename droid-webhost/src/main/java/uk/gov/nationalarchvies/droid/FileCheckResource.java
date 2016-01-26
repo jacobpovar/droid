@@ -10,13 +10,15 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Optional;
 
-public class FileCheckResource extends ServerResource
+public class FileCheckResource         extends ServerResource
 {
     @Get
-    public String represent() {
-        try {
-            final String fileName = decodeFileNameFromRequest();
-            final Optional<FileFormat> fileFormat = SubmissionGatewayProvider.getInstance().process(fileName);
+    public String represent()
+    {
+        try
+        {
+            String fileName = decodeFileNameFromRequest();
+            Optional<FileFormat> fileFormat = SubmissionGatewayProvider.getInstance().process(fileName);
 
             Gson gson = new Gson();
 
@@ -32,6 +34,6 @@ public class FileCheckResource extends ServerResource
 
     private String decodeFileNameFromRequest() throws UnsupportedEncodingException {
         String encoded = (String)getRequest().getAttributes().get("filename");
-        return URLDecoder.decode(encoded, "UTF-8");
+        return URLDecoder.decode(encoded, "UTF-8" );
     }
 }
