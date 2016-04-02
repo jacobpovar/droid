@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright (c) 2012, The National Archives <pronom@nationalarchives.gsi.gov.uk>
+# Copyright (c) 2016, The National Archives <pronom@nationalarchives.gsi.gov.uk>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -130,7 +130,7 @@ fi
 
 # Run the command line or user interface version with the options:
 if [ $# -gt 0 ]; then
-    java $OPTIONS -jar droid-command-line-6.1.5.jar "$@"
+    java $OPTIONS -jar droid-command-line-6.2.1.jar "$@"
 else
-    java $OPTIONS -jar droid-ui-6.1.5.jar
+    java $OPTIONS -jar droid-ui-6.2.1.jar
 fi

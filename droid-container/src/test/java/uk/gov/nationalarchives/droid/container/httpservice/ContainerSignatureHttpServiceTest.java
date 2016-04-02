@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, The National Archives <pronom@nationalarchives.gsi.gov.uk>
+ * Copyright (c) 2016, The National Archives <pronom@nationalarchives.gsi.gov.uk>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -62,7 +62,8 @@ public class ContainerSignatureHttpServiceTest {
         httpService = new ContainerSignatureHttpService();
         //BNO: 25-April-2014 - Updated to reflect the new location following website reorganisation
         // (changed from www~ to app~).  TODO: Ideally settings like this would be managed centrally somewhere!!
-        httpService.setEndpointUrl("http://apps.nationalarchives.gov.uk/pronom/container-signature.xml");
+        // fEB 2016 ... AND BACK TO WWW...
+        httpService.setEndpointUrl("http://www.nationalarchives.gov.uk/pronom/container-signature.xml");
         proxySettings = mock(ProxySettings.class);
     }
     

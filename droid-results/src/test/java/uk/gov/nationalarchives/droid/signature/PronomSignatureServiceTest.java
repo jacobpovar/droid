@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, The National Archives <pronom@nationalarchives.gsi.gov.uk>
+ * Copyright (c) 2016, The National Archives <pronom@nationalarchives.gsi.gov.uk>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -58,7 +58,7 @@ import uk.gov.nationalarchives.droid.core.interfaces.signature.SignatureType;
 @ContextConfiguration(locations = "classpath*:META-INF/spring-signature.xml")
 public class PronomSignatureServiceTest {
 
-    private static final String ENDPOINT_URL = "http://apps.nationalarchives.gov.uk/pronom/service.asmx";
+    private static final String ENDPOINT_URL = "http://www.nationalarchives.gov.uk/pronom/service.asmx";
 //    private static final String ENDPOINT_URL = "http://localhost:6666/pronom/service.asmx";
     
     private static final int PROXY_PORT = 8080;

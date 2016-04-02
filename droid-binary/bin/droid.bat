@@ -1,5 +1,5 @@
 @REM
-@REM Copyright (c) 2012, The National Archives <pronom@nationalarchives.gsi.gov.uk>
+@REM Copyright (c) 2016, The National Archives <pronom@nationalarchives.gsi.gov.uk>
 @REM All rights reserved.
 @REM
 @REM Redistribution and use in source and binary forms, with or without
@@ -138,13 +138,13 @@ IF "%1"=="" GOTO NOPARAM
 
 :PARAM
 REM has command line parameters passed - run command line version:
-java %DROIDOPTIONS% -jar droid-command-line-6.1.5.jar %*
+java %DROIDOPTIONS% -jar droid-command-line-6.2.1.jar %*
 
 GOTO end
 
 :NOPARAM
 REM no command line parameters passed - run GUI version:
-start javaw %DROIDOPTIONS% -jar droid-ui-6.1.5.jar
+start javaw %DROIDOPTIONS% -jar droid-ui-6.2.1.jar
 
 :END
 

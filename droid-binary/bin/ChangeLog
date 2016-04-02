@@ -1,3 +1,17 @@
+Version 6.2.1 Minor bugfix release
+* Byteseek version now 2.0.3 (includes bug fix for matching a single byte that can be one of three or more values)
+* Bug Fix: Profile export now prints zeros where a file has no identifications
+* Bug Fix: GUI now displays the correct icon in an expanded tree for files with no identifications
+
+Version 6.2
+ * Signature updates: Signature file release 84, Container file 20160121
+ * Hibernate replaced by JDBC code, and Byteseek 1.1.1 by Byteseek 2.0 for improved profiling and export performance
+ * Now includes functionality to process the contents of ARC and WARC (web archive) files
+ * Added SHA1 to the hash algorithms available when profiling
+ * Filtering is now case-insensitive on file name, extension and format name
+ * Fix for intermittent skipping of OLE2 containers due to memory pressure (github issue #67) (such cases now logged)
+ * Minor updates to help pages
+
 Version 6.1.5
  * Signature updates: Signature file release 77, Container file 20140624
  * Minor updates to help pages
