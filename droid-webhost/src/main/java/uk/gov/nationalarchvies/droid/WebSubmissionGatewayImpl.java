@@ -23,7 +23,7 @@ import uk.gov.nationalarchives.droid.signature.SaxSignatureFileParser;
 import uk.gov.nationalarchives.droid.signature.SignatureParser;
 
 public class WebSubmissionGatewayImpl implements WebSubmissionGateway {
-    final String signatureFile = "DROID_SignatureFile_V82.xml";
+    final String signatureFile = "DROID_SignatureFile_V84.xml";
     private FileFormatIdentifier fileChecker;
     private Map<String, Format> formatMap = new HashMap();
     private FFSignatureFile sigFile;
@@ -45,12 +45,10 @@ public class WebSubmissionGatewayImpl implements WebSubmissionGateway {
         RequestIdentifier identifier = new RequestIdentifier(uri);
         identifier.setParentId(Long.valueOf(1L));
 
-        InputStream in = null;
         IdentificationRequest request = new FileSystemIdentificationRequest(metaData, identifier);
 
         try {
-            in = new FileInputStream(file);
-            request.open(in);
+            request.open(file);
             IdentificationResultCollection identificationResultCollection = this.fileChecker.get(file);
             return identificationResultCollection.getResults().stream().findFirst().map(x -> x.getPuid()).map(this.sigFile::getFileFormat);
 
@@ -61,8 +59,7 @@ public class WebSubmissionGatewayImpl implements WebSubmissionGateway {
         } finally {
             request.close();
             try {
-                in.close();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -91,7 +88,7 @@ public class WebSubmissionGatewayImpl implements WebSubmissionGateway {
 
     public void setFileChecker(FileFormatIdentifier fileChecker) {
         this.fileChecker = fileChecker;
-        String containerSignatureFile = "container-signature-20150327.xml";
+        String containerSignatureFile = "container-signature-20160121.xml";
         this.fileChecker.setFileSignaturesFileName(signatureFile);
         this.fileChecker.setContainerSignaturesFileName(containerSignatureFile);
         try {

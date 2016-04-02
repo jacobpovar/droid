@@ -139,12 +139,10 @@ public class FileFormatIdentifierImpl
         RequestIdentifier identifier = new RequestIdentifier(uri);
         identifier.setParentId(Long.valueOf(1L));
 
-        InputStream in = null;
         IdentificationRequest request = new FileSystemIdentificationRequest(metaData, identifier);
         try
         {
-            in = new FileInputStream(file);
-            request.open(in);
+            request.open(file);
             IdentificationResultCollection results = this.binarySignatureIdentifier.matchBinarySignatures(request);
             return this.resultsGenerator.get(results, request);
         }
@@ -159,16 +157,13 @@ public class FileFormatIdentifierImpl
         }
         finally
         {
-            if (in != null) {
-                try
-                {
-                    request.close();
-                    in.close();
-                }
-                catch (IOException e)
-                {
-                    throw new CommandExecutionException(e);
-                }
+            try
+            {
+                request.close();
+            }
+            catch (IOException e)
+            {
+                throw new CommandExecutionException(e);
             }
         }
     }
