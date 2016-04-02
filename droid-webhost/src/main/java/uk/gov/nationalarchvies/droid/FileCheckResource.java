@@ -10,7 +10,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Optional;
 
-public class FileCheckResource         extends ServerResource
+public class FileCheckResource extends ServerResource
 {
     @Get
     public String represent()
